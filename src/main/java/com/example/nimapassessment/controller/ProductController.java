@@ -16,37 +16,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
-@RequestMapping({"/api/products"})
+@RequestMapping("/api/products")
 public class ProductController {
     @Autowired
     private ProductService productService;
 
-    public ProductController() {
-    }
-
     @GetMapping
     public Page<Product> getAllProducts(@RequestParam(defaultValue = "0") int page) {
-        return this.productService.getAllProducts(PageRequest.of(page, 10));
+        return productService.getAllProducts(PageRequest.of(page, 10));
     }
 
-    @GetMapping({"/{id}"})
+    @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
-        return this.productService.getProductById(id);
+        return productService.getProductById(id);
     }
 
     @PostMapping
     public Product createProduct(@RequestBody Product product) {
-        return this.productService.createProduct(product);
+        return productService.createProduct(product);
     }
 
-    @PutMapping({"/{id}"})
+    @PutMapping("/{id}")
     public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        return this.productService.updateProduct(id, product);
+        return productService.updateProduct(id, product);
     }
 
-    @DeleteMapping({"/{id}"})
+    @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
-        this.productService.deleteProduct(id);
+        productService.deleteProduct(id);
     }
 }

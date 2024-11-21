@@ -1,33 +1,34 @@
 package com.example.nimapassessment.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+
 
 @Entity
 public class Product {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private Double price;
-    @ManyToOne
-    @JoinColumn(
-            name = "category_id",
-            nullable = false
-    )
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnoreProperties("products") // Prevent recursion
     private Category category;
 
-    public Product() {
-    }
-
+    // Getters and Setters
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Long id) {
@@ -35,7 +36,7 @@ public class Product {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
@@ -43,7 +44,7 @@ public class Product {
     }
 
     public Double getPrice() {
-        return this.price;
+        return price;
     }
 
     public void setPrice(Double price) {
@@ -51,7 +52,7 @@ public class Product {
     }
 
     public Category getCategory() {
-        return this.category;
+        return category;
     }
 
     public void setCategory(Category category) {

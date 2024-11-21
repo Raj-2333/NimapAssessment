@@ -1,5 +1,6 @@
 package com.example.nimapassessment.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,26 +9,25 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 
+
+
+import jakarta.persistence.*;
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class Category {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
-    @OneToMany(
-            mappedBy = "category",
-            cascade = {CascadeType.ALL},
-            orphanRemoval = true
-    )
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("category")
     private List<Product> products;
 
-    public Category() {
-    }
-
+    // Getters and Setters
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Long id) {
@@ -35,7 +35,7 @@ public class Category {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
@@ -43,7 +43,7 @@ public class Category {
     }
 
     public List<Product> getProducts() {
-        return this.products;
+        return products;
     }
 
     public void setProducts(List<Product> products) {

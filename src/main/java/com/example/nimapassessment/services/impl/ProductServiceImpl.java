@@ -1,6 +1,5 @@
 package com.example.nimapassessment.services.impl;
 
-
 import com.example.nimapassessment.entity.Product;
 import com.example.nimapassessment.repository.ProductRepository;
 import com.example.nimapassessment.services.ProductService;
@@ -18,29 +17,55 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
     }
 
+    /**
+     * Fetch all products with server-side pagination.
+     */
+    @Override
     public Page<Product> getAllProducts(Pageable pageable) {
-        return this.productRepository.findAll(pageable);
+        return productRepository.findAll(pageable);
     }
 
+    /**
+     * Fetch a single product by its ID.
+     * Includes the associated category details.
+     */
+    @Override
     public Product getProductById(Long id) {
-        return (Product)this.productRepository.findById(id).orElseThrow(() -> {
-            return new RuntimeException("Product not found with ID: " + id);
-        });
+        return productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
     }
 
+    /**
+     * Create a new product and associate it with a category.
+     */
+    @Override
     public Product createProduct(Product product) {
-        return (Product)this.productRepository.save(product);
+        return productRepository.save(product);
     }
 
+    /**
+     * Update an existing product.
+     * Allows updating the name, price, and associated category.
+     */
+    @Override
     public Product updateProduct(Long id, Product product) {
-        Product existingProduct = this.getProductById(id);
+        // Fetch the existing product
+        Product existingProduct = getProductById(id);
+
+        // Update fields
         existingProduct.setName(product.getName());
         existingProduct.setPrice(product.getPrice());
         existingProduct.setCategory(product.getCategory());
-        return (Product)this.productRepository.save(existingProduct);
+
+        // Save and return the updated product
+        return productRepository.save(existingProduct);
     }
 
+    /**
+     * Delete a product by its ID.
+     */
+    @Override
     public void deleteProduct(Long id) {
-        this.productRepository.deleteById(id);
+        productRepository.deleteById(id);
     }
 }
